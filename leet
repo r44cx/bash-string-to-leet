@@ -1,0 +1,34 @@
+#!/bin/bash
+INPUT=$1
+declare OUTPUT=""
+
+declare -A map
+map=(["A"]="4" ["E"]="3" ["I"]="1" ["O"]="0" ["S"]="5" ["T"]="7" ["D"]="5")
+
+getLeetString() {
+    i=0
+    grep -o . <<<"$INPUT" | while read -r CHAR; do
+        i=$((i + 1))
+        if [[ $CHAR =~ ^[[:alnum:]]+$ ]]; then
+            UPPERCASE=${CHAR^^}
+            if [ ${map[$UPPERCASE]+abc} ] && echo -n ""; then
+                CHAR=${map[$UPPERCASE]}
+            fi
+        else
+            if [[ -z "${CHAR// /}" ]]; then
+                echo -n "!SPACE!"
+            fi
+        fi
+
+        OUTPUT=$(echo -e "$OUTPUT$CHAR")
+        echo -n "$CHAR"
+
+    done
+}
+
+OUTPUT="$(getLeetString)"
+
+find="!SPACE!"
+replace=" "
+OUTPUT="${OUTPUT//$find/$replace}"
+echo "$OUTPUT"
